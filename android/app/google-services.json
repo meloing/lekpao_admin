@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "693823491458",
+    "project_id": "le-kpao",
+    "storage_bucket": "le-kpao.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693823491458:android:6e49ab1774df7bc7b1539b",
+        "android_client_info": {
+          "package_name": "com.archetechnology.le_kpao"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi0hi5tJgJEIIsVBH8QUJ-J6xwXFQkIpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,62 @@
+name: le_kpao
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  dio: ^4.0.6
+  country_picker:
+  flutter_markdown:
+  fl_chart: ^0.55.2
+  image_picker: 0.8.9
+  flutter_tex: ^5.1.8
+  file_picker: ^5.2.5
+  external_path: ^1.0.3
+  firebase_auth: ^4.0.1
+  firebase_core: ^2.0.0
+  google_sign_in: ^5.4.2
+  cloud_firestore: ^4.0.1
+  cupertino_icons: ^1.0.2
+  firebase_analytics: ^10.2.1
+  cached_network_image: ^3.2.2
+  firebase_remote_config: ^3.0.9
+  firebase_storage: ^11.0.11
+  flutter_parsed_text: ^2.2.1
+  firebase_dynamic_links: ^5.0.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "assets/images/logo.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/images/logo.png"
+    icon_size: 48
+  macos:
+    generate: true
+    image_path: "assets/images/logo.png"
