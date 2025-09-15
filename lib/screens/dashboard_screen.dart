@@ -1,5 +1,6 @@
 import '../services/api.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -11,7 +12,9 @@ class DashboardScreen extends StatefulWidget {
 class DashboardScreenState extends State<DashboardScreen> {
   String info = "";
   String total = "0";
+  List topProducts = [];
   bool launch = false;
+  List referralGroups = [];
   DateTime? _selectedDate1;
   DateTime? _selectedDate2;
   String buyQuestion = "...";
@@ -31,9 +34,26 @@ class DashboardScreenState extends State<DashboardScreen> {
     'vvip'
   ];
 
+  double parseAmount(dynamic value) {
+    if(value == null) return 0.0;
+
+    String raw = value.toString().trim();
+
+    bool isDollar = raw.contains("\$");
+    raw = raw.replaceAll(RegExp(r'[^0-9.]'), '');
+
+    double amount = double.tryParse(raw) ?? 0.0;
+
+    if(isDollar){
+      amount *= 500;
+    }
+
+    return amount;
+  }
+
   Future getData() async {
     Map stats = {};
-    int tempTotal = 0;
+    double tempTotal = 0;
     List documentList = [];
     int tempAchatPremium = 0;
     int tempAchatDocument = 0;
@@ -43,7 +63,8 @@ class DashboardScreenState extends State<DashboardScreen> {
 
     for(var doc in results){
       Map data = doc.data();
-      tempTotal += int.parse(data["cpm_amount"]);
+
+      tempTotal += parseAmount(data["cpm_amount"]);
 
       if(data["command_type"] == "command_document"){
         tempAchatDocument += 1;
@@ -59,11 +80,26 @@ class DashboardScreenState extends State<DashboardScreen> {
       stats[data["formula"]] = (stats[data["formula"]] ?? 0) + 1;
     }
 
-    int number = await Api().getNumberSubscribersInRange(_selectedDate1Range!, _selectedDate2Range!);
+    var subscribers = await Api().getNumberSubscribersInRange(_selectedDate1Range!, _selectedDate2Range!);
+
+    final maps = subscribers.map((d) {
+      final data = (d.data() as Map<String, dynamic>?) ?? {};
+      return data;
+    });
+
+    final withCode = maps.where((e) => e['referral_code'] != null);
+
+    final grouped = groupBy(withCode, (Map e) => e['referral_code']);
+
+    final referralGroup = grouped.entries
+        .map((e) => {"referral_code": e.key, "count": e.value.length})
+        .toList();
+
     setState(() {
       total = tempTotal.toString();
-      totalInscrit = number.toString();
+      referralGroups = referralGroup;
       buyQuestion = results.length.toString();
+      totalInscrit = subscribers.length.toString();
     });
   }
 
@@ -325,6 +361,73 @@ class DashboardScreenState extends State<DashboardScreen> {
                           )
                       )
                     ]
+                ),
+                const SizedBox(height: 10),
+                Card(
+                  elevation: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Table(
+                        border: TableBorder.all(
+                          color: Colors.grey,
+                          width: 1,
+                        ),
+                        columnWidths: const {
+                          0: FlexColumnWidth(2),
+                          1: FlexColumnWidth(1),
+                        },
+                        children: [
+                          const TableRow(
+                              decoration: BoxDecoration(color: Color(0xFFE3F2FD)),
+                              children: [
+                                Padding(
+                                    padding: EdgeInsets.all(12),
+                                    child: Text(
+                                        'Code parrainage',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold
+                                        )
+                                    )
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.all(12),
+                                    child: Text(
+                                        'Nombre',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold
+                                        )
+                                    )
+                                )
+                              ]
+                          ),
+                          ...referralGroups.take(10).map((item) {
+                            return TableRow(
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Text(
+                                          item['referral_code'] ?? '',
+                                          style: const TextStyle(fontSize: 15)
+                                      )
+                                  ),
+                                  Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Text(
+                                          '${item['count']}',
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold
+                                          )
+                                      )
+                                  )
+                                ]
+                            );
+                          })
+                        ]
+                    )
+                  )
                 )
               ]
           )

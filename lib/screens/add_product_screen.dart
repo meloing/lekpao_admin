@@ -25,9 +25,10 @@ class AddProductScreenState extends State<AddProductScreen> {
 
   var fileTypes = ['', 'pdf', 'text', 'html'];
 
-  var levels = ['', 'sixieme', 'cinquieme', 'quatrieme', 'troisieme', 'seconde',
-                'premiere', 'terminale', "cafop", "infas bac", "infas bepc",
-                "ena", "police"];
+  var levels = ['', 'sixieme', 'cinquieme', 'quatrieme', 'troisieme', 'seconde a',
+    'seconde c', 'premiere a', 'premiere c', 'premiere d', 'terminale a',
+    'terminale c', 'terminale d', 'terminale e', "cafop", "infas bac",
+    "infas bepc", "ena", "police"];
 
   final _registerFormKey = GlobalKey<FormState>();
 
@@ -39,6 +40,8 @@ class AddProductScreenState extends State<AddProductScreen> {
   TextEditingController countryController = TextEditingController();
   TextEditingController pictureController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController isValidateController = TextEditingController();
+  TextEditingController iapIdController = TextEditingController();
 
   Future addTopic() async{
 
@@ -49,12 +52,14 @@ class AddProductScreenState extends State<AddProductScreen> {
     String subject = subjectValue.text;
     String title = titleController.text;
     String price = priceController.text;
+    String iapId = iapIdController.text;
     String picture = pictureController.text;
+    String isValidated = isValidateController.text;
     String description = descriptionController.text;
     String date = DateTime.now().toString().split(".")[0];
 
     final productId = await ProductRequests().addProduct(title, description, price, date,
-        topicLevels, subject, picture, file, countrys, fileTypeValue);
+        topicLevels, subject, picture, file, countrys, fileTypeValue, iapId, isValidated);
 
     if(productId != null){
       response = await ProductRequests().addProductInJson(productId, int.parse(price), 10);
@@ -376,7 +381,43 @@ class AddProductScreenState extends State<AddProductScreen> {
                                   return null;
                                 }
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 15),
+
+                            TextFormField(
+                                controller: isValidateController,
+                                decoration: const InputDecoration(
+                                    labelText: "is Validated",
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                        borderSide: BorderSide(color: Colors.red)
+                                    )
+                                ),
+                                validator: (value){
+                                  if(value == null || value.isEmpty){
+                                    return 'Ce champ est obligatoire';
+                                  }
+                                  return null;
+                                }
+                            ),
+                            const SizedBox(height: 15),
+
+                            TextFormField(
+                                controller: iapIdController,
+                                decoration: const InputDecoration(
+                                    labelText: "Iap Id",
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                        borderSide: BorderSide(color: Colors.red)
+                                    )
+                                ),
+                                validator: (value){
+                                  if(value == null || value.isEmpty){
+                                    return 'Ce champ est obligatoire';
+                                  }
+                                  return null;
+                                }
+                            ),
+                            const SizedBox(height: 15),
 
                             TextButton(
                                 onPressed: (){

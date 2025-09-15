@@ -28,8 +28,10 @@ class TopicsScreenState extends State<TopicsScreen> {
   var listSubSubject = [''];
   String subSubjectValue = "";
 
-  var items = ['', 'sixieme', 'cinquieme', 'quatrieme', 'troisieme', 'seconde',
-               'premiere', 'terminale', "cafop", "infas bac", "infas bepc",
+  var items = ['', 'sixieme', 'cinquieme', 'quatrieme', 'troisieme',
+    'seconde a', 'seconde c', 'premiere a', 'premiere c', 'premiere d',
+    'terminale a', 'terminale c', 'terminale d', 'terminale e',
+    "cafop", "infas bac", "infas bepc",
                "ena", "police"];
 
   var subjects = ['', 'allemand', 'français', 'histoire géographie', 'physique chimie',

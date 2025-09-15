@@ -65,14 +65,13 @@ class Api {
   Future getNumberSubscribersInRange(String plage1, String plage2) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    AggregateQuerySnapshot  querySnapshot = await firestore
+    QuerySnapshot  querySnapshot = await firestore
         .collection('users')
         .where('created_at', isGreaterThanOrEqualTo: plage1)
         .where('created_at', isLessThanOrEqualTo: plage2)
-        .count()
         .get();
 
-    return querySnapshot.count;
+    return querySnapshot.docs;
   }
 
   Future<int> getInvitedUsersCount(env, lastPaymentDate, referralCode) async {
@@ -125,7 +124,9 @@ class Api {
     };
   }
 
-  Future<Map<String, dynamic>?> getUserById(String docId) async {
+  Future<Map<String, dynamic>?> getUserById(String docId, String env) async {
+    CollectionReference users = FirebaseFirestore.instance.collection(env == "Prod" ? 'users': "usersDev");
+
     try{
       DocumentSnapshot userDoc = await users.doc(docId).get();
       if(userDoc.exists){
@@ -138,5 +139,17 @@ class Api {
     catch(e){
       return null;
     }
+  }
+
+  Future getDocumentsByIds(List<String> docIds) async {
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    QuerySnapshot querySnapshot = await firestore
+        .collection("productsProd")
+        .where(FieldPath.documentId, whereIn: docIds)
+        .get();
+
+    return querySnapshot.docs;
   }
 }

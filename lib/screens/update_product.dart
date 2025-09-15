@@ -39,11 +39,13 @@ class UpdateProductScreenState extends State<UpdateProductScreen> {
   TextEditingController subjectValue = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController fileController = TextEditingController();
+  TextEditingController iapIdController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController pictureController = TextEditingController();
   TextEditingController productIdController = TextEditingController();
+  TextEditingController isValidateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
   Future updateProduct() async{
@@ -55,13 +57,15 @@ class UpdateProductScreenState extends State<UpdateProductScreen> {
     String subject = subjectValue.text;
     String title = titleController.text;
     String price = priceController.text;
+    String iapId = iapIdController.text;
     String picture = pictureController.text;
+    String isValidated = isValidateController.text;
     String description = descriptionController.text;
     String date = DateTime.now().toString().split(".")[0];
 
     response = await ProductRequests().updateProduct(title, description, price,
         date, topicLevels, subject, picture, file, countrys, fileTypeValue,
-        product["productId"]);
+        product["productId"], iapId, isValidated);
 
     if(response){
       response = await ProductRequests().addProductInJson(
@@ -136,8 +140,10 @@ class UpdateProductScreenState extends State<UpdateProductScreen> {
       subjectValue.text = product['subject'];
       titleController.text = product['title'];
       priceController.text = product['price'];
+      iapIdController.text = product['iap_id'];
       pictureController.text = product['picture'];
       productIdController.text = product['productId'];
+      isValidateController.text = product['is_validated'];
       descriptionController.text = product['description'];
     });
   }
@@ -408,7 +414,43 @@ class UpdateProductScreenState extends State<UpdateProductScreen> {
                                   return null;
                                 }
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 15),
+
+                            TextFormField(
+                                controller: isValidateController,
+                                decoration: const InputDecoration(
+                                    labelText: "is Validated",
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                        borderSide: BorderSide(color: Colors.red)
+                                    )
+                                ),
+                                validator: (value){
+                                  if(value == null || value.isEmpty){
+                                    return 'Ce champ est obligatoire';
+                                  }
+                                  return null;
+                                }
+                            ),
+                            const SizedBox(height: 15),
+
+                            TextFormField(
+                                controller: iapIdController,
+                                decoration: const InputDecoration(
+                                    labelText: "Iap Id",
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                        borderSide: BorderSide(color: Colors.red)
+                                    )
+                                ),
+                                validator: (value){
+                                  if(value == null || value.isEmpty){
+                                    return 'Ce champ est obligatoire';
+                                  }
+                                  return null;
+                                }
+                            ),
+                            const SizedBox(height: 15),
 
                             TextButton(
                                 onPressed: (){

@@ -17,13 +17,14 @@ class ProductsScreen extends StatefulWidget {
 
 class ProductsScreenState extends State<ProductsScreen> {
   String uid = "";
+  String level = '';
   List products = [];
   String env = "Prod";
-  String level = '';
 
-  var items = ['', 'sixieme', 'cinquieme', 'quatrieme', 'troisieme', 'seconde',
-              'premiere', 'terminale', "cafop", "infas bac", "infas bepc",
-              "ena", "police"];
+  var items = ['', 'sixieme', 'cinquieme', 'quatrieme', 'troisieme', 'seconde a',
+    'seconde c', 'premiere a', 'premiere c', 'premiere d', 'terminale a',
+    'terminale c', 'terminale d', 'terminale e', "cafop", "infas bac",
+    "infas bepc", "ena", "police"];
 
   Future addProductToProd(index) async{
     Map product = products[index];
@@ -98,7 +99,7 @@ class ProductsScreenState extends State<ProductsScreen> {
                                 )
                             );
                           },
-                          child: const Text("Ajouter un annale")
+                          child: const Text("Ajouter une annale")
                       )
                     ]
                   ),

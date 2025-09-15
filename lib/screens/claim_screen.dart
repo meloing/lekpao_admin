@@ -30,11 +30,11 @@ class ClaimScreenState extends State<ClaimScreen> {
 
   var types = ['', 'Achat de question', 'Achat de document', 'Achat de sujets et corrigés'];
 
-  var items = ['', 'sixieme', 'cinquieme', 'quatrieme', 'troisieme', 'seconde',
-              'premiere', 'terminale', "cafop", "infas bac", "infas bepc",
-              "ena", "police"];
+  var items = ['', 'sixieme', 'cinquieme', 'quatrieme', 'troisieme', 'seconde a', 'seconde c', 'premiere a', 'premiere c', 'premiere d',
+    'terminale a', 'terminale c', 'terminale d', 'terminale e', "cafop", "infas bac", "infas bepc",
+    "ena", "police"];
 
-  var subjects = ['', 'allemand', 'français', 'histoire géographie', 'physique chimie',
+  var subjects = ['', 'all', 'allemand', 'français', 'histoire géographie', 'physique chimie',
                   'edhc', 'espagnol', 'philosophie', 'tic', 'eps', 'anglais', 'svt',
                   'musique', 'mathématiques', 'art plastique', 'st', 'culture générale',
                   'aptitude verbale', 'logique mathématiques'];
@@ -51,7 +51,7 @@ class ClaimScreenState extends State<ClaimScreen> {
     String finishDate = DateTime.now().add(const Duration(days: 307)).toString().split(".")[0];
     String finishQuestionDate = DateTime.now().add(const Duration(days: 5)).toString().split(".")[0];
 
-    final user = await Api().getUserById(userId);
+    final user = await Api().getUserById(userId, env);
 
     if(type == "Achat de question"){
 

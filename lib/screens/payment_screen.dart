@@ -21,8 +21,8 @@ class PaymentScreenState extends State<PaymentScreen> {
   TextEditingController userIdController = TextEditingController();
 
   void getUser()async{
-    String userId = userIdController.text;
-    user = await Api().getUserById(userId);
+    String userId = userIdController.text.trim();
+    user = await Api().getUserById(userId, env);
 
     if(user != null){
       code = Utilities().generateCodeFromAuthId(user?["auth_id"]);

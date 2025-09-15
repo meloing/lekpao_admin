@@ -32,9 +32,31 @@ class AdminScreenState extends State<AdminScreen> {
     'vvip'
   ];
 
+  double parseAmount(dynamic value) {
+    if (value == null) return 0.0;
+
+    String raw = value.toString().trim();
+
+    // Vérifie si la valeur contient "$"
+    bool isDollar = raw.contains("\$");
+
+    // Nettoie pour garder chiffres + .
+    raw = raw.replaceAll(RegExp(r'[^0-9.]'), '');
+
+    double amount = double.tryParse(raw) ?? 0.0;
+
+    if (isDollar) {
+      amount *= 500; // conversion en FCFA
+    }
+
+    return amount;
+  }
+
+
+
   Future getData() async {
     Map stats = {};
-    int tempTotal = 0;
+    double tempTotal = 0;
     List documentList = [];
     int tempAchatPremium = 0;
     int tempAchatDocument = 0;
@@ -44,7 +66,7 @@ class AdminScreenState extends State<AdminScreen> {
 
     for(var doc in results){
       Map data = doc.data();
-      tempTotal += int.parse(data["cpm_amount"]);
+      tempTotal += parseAmount(data["cpm_amount"]);
 
       if(data["command_type"] == "command_document"){
         tempAchatDocument += 1;
@@ -60,11 +82,11 @@ class AdminScreenState extends State<AdminScreen> {
       stats[data["formula"]] = (stats[data["formula"]] ?? 0) + 1;
     }
 
-    int number = await Api().getNumberSubscribersInRange(_selectedDate1Range!, _selectedDate2Range!);
+    var subscribers = await Api().getNumberSubscribersInRange(_selectedDate1Range!, _selectedDate2Range!);
     setState(() {
       total = tempTotal.toString();
-      totalInscrit = number.toString();
       buyQuestion = results.length.toString();
+      totalInscrit = subscribers.length.toString();
     });
   }
 

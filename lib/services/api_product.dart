@@ -6,7 +6,9 @@ class ProductRequests {
 
   Future addProduct(String title, String description, String price, String date,
                     List levels, String subject, String picture, String file,
-                    List country, String type) async {
+                    List country, String type, String iapId,
+      String isValidated) async {
+
     Map<String, dynamic> value = {
       "env": "Dev",
       "date" : date,
@@ -14,11 +16,13 @@ class ProductRequests {
       "file" : file,
       "title" : title,
       "price" : price,
+      "iap_id" : iapId,
       "levels" : levels,
       "subject": subject,
       "country" : country,
       "picture" : picture,
-      "description" : description
+      "description" : description,
+      "is_validated" : isValidated
     };
 
     try{
@@ -32,7 +36,8 @@ class ProductRequests {
 
   Future updateProduct(String title, String description, String price, String date,
       List levels, String subject, String picture, String file,
-      List country, String type, String productId) async {
+      List country, String type, String productId, String iapId,
+      String isValidated) async {
 
     Map<String, dynamic> value = {
       "date" : date,
@@ -40,11 +45,13 @@ class ProductRequests {
       "file" : file,
       "title" : title,
       "price" : price,
+      "iap_id" : iapId,
       "levels" : levels,
       "subject": subject,
       "country" : country,
       "picture" : picture,
-      "description" : description
+      "description" : description,
+      "is_validated" : isValidated
     };
 
     return products
